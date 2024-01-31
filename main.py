@@ -1,5 +1,6 @@
 import random
 import sys
+
 name = input("Enter your first name: ")
 print("\n")
 waiver_signed = input(
@@ -7,55 +8,107 @@ waiver_signed = input(
 print("\n")
 
 if name.lower() == waiver_signed.lower():
-    print("Game has begun\n")
+    print("Game has begun \n")
 
     def game():
         while True:
-            empty = random.randint(0, 7)
-            bullets = random.randint(0, 7)
-            if empty + bullets == 8:
-                Empty = str(empty)
-                Bullets = str(bullets)
-                New_Empty = str(empty-1)
-                print("Empty Shell(s): " + Empty + " Bullet(s): "+Bullets+"\n")
+            empty_shells = random.randint(1, 7)
+            bullets = random.randint(1, 7)
+            if empty_shells + bullets == 8:
+                str_empty = str(empty_shells)
+                str_bullets = str(bullets)
+                new_empty = (empty_shells-1)
+                str_new_empty = str(new_empty)
 
+                print("Empty Shell(s): " + str_empty +
+                      " Bullet(s): "+str_bullets+"\n")
                 while True:
-                    live_round = random.choice([empty, bullets])
+                    live_round = random.choice([empty_shells, bullets])
                     trigger = input(
-                        "To shoot yourself, use key 's' or to shoot the dealer use 'd' ")
+                        "To shoot yourself,use key 's' or to shoot the dealer use key 'd' ")
 
+                    # Game over in first shot
                     if trigger == "s" and live_round == bullets:
-                        print("Game over you died")
-                        break
+                        print("Game over! you shot yourself")
                         sys.exit()
-                    elif trigger == "s" and live_round == empty:
-                        print("You can continue and now empty shells : " +
-                              New_Empty + " Bullets : " + Bullets)
-                        if New_Empty == 0:
-                            print("No more empty shells and game over")
-                            break
-                            sys.exit()
-                        else:
-                            New_Empty = str(int(New_Empty)-1)
-                            continue
+                        break
 
                     elif trigger == "d" and live_round == bullets:
-                        print("You won the game and you killed the dealer")
-                        break
+                        print("Game over! you shoot the dealer")
                         sys.exit()
-                    elif trigger == "d" and live_round == empty:
-                        print("The Dealer survived now empty shells : " +
-                              New_Empty + " Bullets : " + Bullets)
-                        if New_Empty == 0:
-                            print("No more empty shells and game over")
-                            break
+                        break
+
+                    # Game continues with dealer having a choice
+                    elif trigger == "s" and live_round == empty_shells:
+
+                        print("You survived now empty shells left : " +
+                              str_new_empty + " Bullets : " + str_bullets)
+                        if new_empty == 0:
+                            print("No more empty shells left , game over")
                             sys.exit()
+                            break
+
                         else:
-                            New_Empty = str(int(New_Empty)-1)
-                            continue
-                break  # Exit the loop if the condition is met
+                            print("\n Dealer's turn \n")
+                            dealer_choice = random.choice("s" "p")
+                            dealer_live_round = random.choice(
+                                [new_empty, bullets])
+                            dealer_new_empty = new_empty-1
+                            str_dealer_new_empty = str(dealer_new_empty)
+                            if dealer_choice == "s" and dealer_live_round == bullets:
+                                print("You won! , The Dealer shot himself")
+                                sys.exit()
+                                break
+                            elif dealer_choice == "p" and dealer_live_round == bullets:
+                                print("You lost, The Dealer shot you ")
+                                sys.exit()
+                                break
+                            elif dealer_choice == "s" and dealer_live_round == new_empty:
+                                print("The Dealer survived and now empty shells left : " +
+                                      str_dealer_new_empty + " Bullets : " + str_bullets)
+                                continue
+                            elif dealer_choice == "p" and dealer_live_round == new_empty:
+
+                                print("You survived and now empty shells left : " +
+                                      str_dealer_new_empty + " Bullets : " + str_bullets)
+                                continue
+                    elif trigger == "d" and live_round == empty_shells:
+
+                        print("The dealer survived now empty shells left : " +
+                              str_new_empty + " Bullets : " + str_bullets)
+                        if new_empty == 0:
+                            print("No more empty shells left , game over")
+                            sys.exit()
+                            break
+
+                        else:
+                            print("\n Dealer's turn \n")
+                            dealer_choice = random.choice("s" "p")
+                            dealer_live_round = random.choice(
+                                [new_empty, bullets])
+                            dealer_new_empty = new_empty-1
+                            str_dealer_new_empty = str(dealer_new_empty)
+                            if dealer_choice == "s" and dealer_live_round == bullets:
+                                print("You won! , The Dealer shot himself")
+                                sys.exit()
+                                break
+                            elif dealer_choice == "p" and dealer_live_round == bullets:
+                                print("You lost, The Dealer shot you ")
+                                sys.exit()
+                                break
+                            elif dealer_choice == "s" and dealer_live_round == new_empty:
+                                new_empty = new_empty-1
+                                print("The Dealer survived and now empty shells left : " +
+                                      str_dealer_new_empty + " Bullets : " + str_bullets)
+                                continue
+                            elif dealer_choice == "p" and dealer_live_round == new_empty:
+                                print("You survived and now empty shells left : " +
+                                      str_dealer_new_empty + " Bullets : " + str_bullets)
+                                continue
+
             else:
-                continue  # Rerun the loop to generate new random numbers
+                continue
     game()
 else:
-    print("Game has ended because signature doesn't match name.")
+    print("Your sign doesn't match your name")
+    sys.exit()
